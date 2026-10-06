@@ -153,6 +153,28 @@
             </div>
 
             <div class="col-md-6">
+                <div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Form Pertanyaan</h5>
+
+        <form action="{{ route('question.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" class="form-control" name="nama">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="question" class="form-label">Pertanyaan</label>
+                <textarea class="form-control" rows="4" name="question" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Kirim Pertanyaan</button>
+        </form>
+    </div>
+</div>
                 {{-- Alerts --}}
                 <div class="card ">
                     <div class="card-body">
@@ -181,40 +203,37 @@
                 {{-- Table --}}
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="h5 mb-3">Table</h3>
-                        <div class="table-responsive">
-                            <table class="table align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Ani</td>
-                                        <td>Admin</td>
-                                        <td><span class="badge text-bg-success">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Budi</td>
-                                        <td>User</td>
-                                        <td><span class="badge text-bg-secondary">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Cici</td>
-                                        <td>Editor</td>
-                                        <td><span class="badge text-bg-warning">Pending</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="text-muted small mb-0">Tambahkan <code>.table-striped</code> atau <code>.table-bordered</code> sesuai kebutuhan.</p>
+                        <h3 class="h5 mb-3">Daftar Pertanyaan</h3>
+                        @if ($questions->isEmpty())
+                            <div class="alert alert-info mb-0" role="alert">
+                                Belum ada pertanyaan yang disimpan.
+                            </div>
+                        @else
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Pertanyaan</th>
+                                            <th>Tanggal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($questions as $question)
+                                            <tr>
+                                                <td>{{ $question->id }}</td>
+                                                <td>{{ $question->name }}</td>
+                                                <td>{{ $question->email }}</td>
+                                                <td>{{ $question->question }}</td>
+                                                <td>{{ $question->created_at->format('d-m-Y H:i') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
