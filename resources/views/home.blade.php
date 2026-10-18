@@ -163,6 +163,14 @@
                     <div class="card-body">
                         <h5 class="card-title">Form Pertanyaan</h5>
 
+                        @if (session('question'))
+                            <div class="alert alert-info">
+                                Terimakasih <strong>{{ session('question.nama') }}</strong>!
+                                Pertanyaan ini: <strong>{{ session('question.pertanyaan') }}</strong>
+                                akan segera direspon melalui email <strong>{{ session('question.email') }}</strong>
+                            </div>
+                        @endif
+
                         <form action="{{ route('question.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
@@ -260,6 +268,14 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    @if (session('question'))
+        <script>
+            setTimeout(function () {
+                window.location.href = "{{ route('question.respon') }}";
+            }, 2000); // 2000 ms = 2 detik
+        </script>
+    @endif
 </body>
 
 </html>
