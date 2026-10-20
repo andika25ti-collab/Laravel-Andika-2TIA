@@ -29,13 +29,26 @@ class QuestionController extends Controller
     {
         // dd($request->all());
 
-        $data['nama'] = $request->nama;
-        $data['email'] = $request->email;
-        $data['pertanyaan'] = $request->pertanyaan;
+        session(['question' => [
+            'nama'       => $request->nama,
+            'email'      => $request->email,
+            'pertanyaan' => $request->pertanyaan,
+        ]]);
+
+        return redirect('/home');
+    }
+
+
+    public function respon()
+    {
+        $data = session()->pull('question'); // ambil lalu hapus dari session
+
+        if (!$data) {
+            return redirect('/home'); // kalau dibuka langsung tanpa isi form
+        }
 
         return view('home-question-respon', $data);
     }
-
 
     public function show(string $id)
     {
