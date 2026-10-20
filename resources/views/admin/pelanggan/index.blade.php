@@ -34,6 +34,7 @@
                                     <th scope="col">Gender</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Telepon</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,10 +45,19 @@
                                         <td>{{ $item->gender ?? '-' }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->phone ?? '-' }}</td>
+                                        <td>
+                                            <a href="{{ route('pelanggan.show', $item) }}" class="btn btn-sm btn-outline-primary">Detail</a>
+                                            <a href="{{ route('pelanggan.edit', $item) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                            <form action="{{ route('pelanggan.destroy', $item) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data pelanggan ini?')">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">Belum ada data pelanggan.</td>
+                                        <td colspan="6" class="text-center">Belum ada data pelanggan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
