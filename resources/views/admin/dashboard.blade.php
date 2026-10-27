@@ -121,50 +121,34 @@
                     @endif
                 </article>
 
-                <article class="content-card" id="experience">
-                    <div class="card-heading">
-                        <div>
-                            <span class="eyebrow">PERJALANAN</span>
-                            <h2>Pengalaman</h2>
+                @foreach ([
+                    ['id' => 'experience', 'eyebrow' => 'PERJALANAN', 'title' => 'Pengalaman', 'items' => $experienceItems, 'dot' => 'dot-blue', 'empty' => 'Pengalaman, proyek, atau kegiatan organisasi akan tampil di sini setelah ditambahkan.'],
+                    ['id' => 'education', 'eyebrow' => 'LATAR BELAKANG', 'title' => 'Pendidikan', 'items' => $educationItems, 'dot' => 'dot-orange', 'empty' => 'Riwayat pendidikan akan tampil di sini setelah ditambahkan.'],
+                ] as $section)
+                    <article class="content-card" id="{{ $section['id'] }}">
+                        <div class="card-heading">
+                            <div>
+                                <span class="eyebrow">{{ $section['eyebrow'] }}</span>
+                                <h2>{{ $section['title'] }}</h2>
+                            </div>
+                            <span class="card-count">{{ count($section['items']) }}</span>
                         </div>
-                        <span class="card-count">{{ count($experienceItems) }}</span>
-                    </div>
-                    @forelse ($experienceItems as $item)
-                        <div class="timeline-item">
-                            <span class="timeline-dot dot-blue"></span>
-                            <p>{{ $item }}</p>
-                        </div>
-                    @empty
-                        <p class="muted-copy">Pengalaman, proyek, atau kegiatan organisasi akan tampil di sini setelah ditambahkan.</p>
-                    @endforelse
-                </article>
-
-                <article class="content-card" id="education">
-                    <div class="card-heading">
-                        <div>
-                            <span class="eyebrow">LATAR BELAKANG</span>
-                            <h2>Pendidikan</h2>
-                        </div>
-                        <span class="card-count">{{ count($educationItems) }}</span>
-                    </div>
-                    @forelse ($educationItems as $item)
-                        <div class="timeline-item">
-                            <span class="timeline-dot dot-orange"></span>
-                            <p>{{ $item }}</p>
-                        </div>
-                    @empty
-                        <p class="muted-copy">Riwayat pendidikan akan tampil di sini setelah ditambahkan.</p>
-                    @endforelse
-                </article>
+                        @forelse ($section['items'] as $item)
+                            <div class="timeline-item">
+                                <span class="timeline-dot {{ $section['dot'] }}"></span>
+                                <p>{{ $item }}</p>
+                            </div>
+                        @empty
+                            <p class="muted-copy">{{ $section['empty'] }}</p>
+                        @endforelse
+                    </article>
+                @endforeach
             </div>
 
             <div class="workspace-column">
                 <article class="content-card" id="skills">
                     <div class="card-heading">
-                        <div>
-                            <span class="eyebrow">YANG SAYA KUASAI</span>
-                            <h2>Keahlian</h2>
-                        </div>
+                        <div><span class="eyebrow">YANG SAYA KUASAI</span><h2>Keahlian</h2></div>
                         <i class="fa-solid fa-wand-magic-sparkles heading-icon" aria-hidden="true"></i>
                     </div>
                     @forelse ($skillItems as $skill)
@@ -176,25 +160,17 @@
 
                 <article class="content-card" id="interests">
                     <div class="card-heading">
-                        <div>
-                            <span class="eyebrow">DI LUAR KEGIATAN</span>
-                            <h2>Minat</h2>
-                        </div>
+                        <div><span class="eyebrow">DI LUAR KEGIATAN</span><h2>Minat</h2></div>
                         <i class="fa-solid fa-heart heading-icon icon-heart" aria-hidden="true"></i>
                     </div>
-                    @if ($cv?->interests)
-                        <p class="content-copy">{{ $cv->interests }}</p>
-                    @else
-                        <p class="muted-copy">Minat dan bidang yang ingin dipelajari akan tampil di sini setelah ditambahkan.</p>
-                    @endif
+                    <p class="{{ $cv?->interests ? 'content-copy' : 'muted-copy' }}">
+                        {{ $cv?->interests ?: 'Minat dan bidang yang ingin dipelajari akan tampil di sini setelah ditambahkan.' }}
+                    </p>
                 </article>
 
                 <article class="content-card" id="awards">
                     <div class="card-heading">
-                        <div>
-                            <span class="eyebrow">PENCAPAIAN</span>
-                            <h2>Sertifikat &amp; Penghargaan</h2>
-                        </div>
+                        <div><span class="eyebrow">PENCAPAIAN</span><h2>Sertifikat &amp; Penghargaan</h2></div>
                         <i class="fa-solid fa-award heading-icon icon-award" aria-hidden="true"></i>
                     </div>
                     @forelse ($awardItems as $award)
@@ -211,10 +187,7 @@
 
         <section class="content-card manage-card" id="manage">
             <div class="card-heading">
-                <div>
-                    <span class="eyebrow">PENGELOLAAN DATA</span>
-                    <h2>Kelola CV</h2>
-                </div>
+                <div><span class="eyebrow">PENGELOLAAN DATA</span><h2>Kelola CV</h2></div>
                 <div class="d-flex flex-wrap gap-2">
                     @if ($cv)
                         <a class="btn btn-outline-primary" href="{{ route('resume') }}">
@@ -224,18 +197,15 @@
                     <a class="btn btn-primary modern-button" href="{{ route('biodata.create') }}">
                         <i class="fa-solid fa-plus me-2" aria-hidden="true"></i>Tambah CV
                     </a>
+                    <a class="btn btn-outline-secondary" href="{{ route('pelanggan.index') }}">
+                        <i class="fa-solid fa-users me-2" aria-hidden="true"></i>Data Pelanggan
+                    </a>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table modern-table align-middle mb-0">
                     <thead>
-                        <tr>
-                            <th scope="col">Profil</th>
-                            <th scope="col">NIM</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Nomor HP</th>
-                            <th scope="col" class="text-end">Aksi</th>
-                        </tr>
+                        <tr><th scope="col">Profil</th><th scope="col">NIM</th><th scope="col">Email</th><th scope="col">Nomor HP</th><th scope="col" class="text-end">Aksi</th></tr>
                     </thead>
                     <tbody>
                         @forelse ($biodataEntries as $entry)

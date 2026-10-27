@@ -28,6 +28,7 @@
         <a href="{{ $dashboardUrl }}#interests"><i class="fa-solid fa-heart" aria-hidden="true"></i><span>Minat</span></a>
         <a href="{{ $dashboardUrl }}#awards"><i class="fa-solid fa-award" aria-hidden="true"></i><span>Pencapaian</span></a>
         <a href="{{ $dashboardUrl }}#manage"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Kelola CV</span></a>
+        <a href="{{ route('pelanggan.index') }}"><i class="fa-solid fa-users" aria-hidden="true"></i><span>Data Pelanggan</span></a>
     </nav>
 
     <div class="sidebar-bottom">

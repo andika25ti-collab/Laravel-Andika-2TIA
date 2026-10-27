@@ -4,6 +4,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\BiodataController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PelangganController;
+
 
 
 Route::get('/', [BiodataController::class, 'resume'])->name('resume');
@@ -23,3 +25,5 @@ Route::get('/dashboard', [BiodataController::class, 'index'])->name('dashboard')
 Route::resource('biodata', BiodataController::class)
     ->except(['index', 'show'])
     ->parameters(['biodata' => 'biodata']);
+
+Route::resource('pelanggan', PelangganController::class);
