@@ -21,6 +21,17 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## CV Dashboard
+
+Dashboard CV menggunakan template Start Bootstrap Resume dan database MySQL Laragon `andika`. Jika menyiapkan proyek di komputer lain, sesuaikan konfigurasi `DB_*` di `.env`, lalu siapkan tabel dan akses foto profil:
+
+```bash
+php artisan migrate
+php artisan storage:link
+```
+
+Buka `/` untuk menampilkan CV dengan tampilan Resume. Gunakan tautan **Kelola CV** atau **Dashboard** untuk membuka pengelolaan data. Form CV mencakup profil, pengalaman, pendidikan, keahlian, minat, pencapaian, dan foto profil. Data disimpan pada tabel `Biodata_1021` dan dapat dilihat di database `andika` melalui HeidiSQL atau phpMyAdmin.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
