@@ -39,4 +39,26 @@ class QuestionStoreTest extends TestCase
         $response->assertSessionHasErrors(['name', 'email', 'question']);
         $this->assertDatabaseCount('questions', 0);
     }
+
+    public function test_store_accepts_the_original_indonesian_form_fields(): void
+    {
+        $this->post('/question/store', [
+            'nama' => 'Andika',
+            'email' => 'andika@example.com',
+            'pertanyaan' => 'Bagaimana kabarnya?',
+        ])
+            ->assertRedirect('/home')
+            ->assertSessionHas('success', 'Question berhasil disimpan.')
+            ->assertSessionHas('question', [
+                'nama' => 'Andika',
+                'email' => 'andika@example.com',
+                'pertanyaan' => 'Bagaimana kabarnya?',
+            ]);
+
+        $this->assertDatabaseHas('questions', [
+            'name' => 'Andika',
+            'email' => 'andika@example.com',
+            'question' => 'Bagaimana kabarnya?',
+        ]);
+    }
 }

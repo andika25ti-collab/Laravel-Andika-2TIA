@@ -32,6 +32,12 @@ php artisan storage:link
 
 Buka `/` untuk menampilkan CV dengan tampilan Resume. Gunakan tautan **Kelola CV** atau **Dashboard** untuk membuka pengelolaan data. Form CV mencakup profil, pengalaman, pendidikan, keahlian, minat, pencapaian, dan foto profil. Data disimpan pada tabel `Biodata_1021` dan dapat dilihat di database `andika` melalui HeidiSQL atau phpMyAdmin.
 
+Halaman `/home` menyediakan formulir pertanyaan. Kiriman yang valid disimpan pada tabel `questions` dan ditampilkan kembali pada halaman tersebut.
+
+Halaman Pelanggan (`index`, `create`, `edit`, dan `show`) menggunakan layout Blade bersama di `resources/views/layouts/admin`, termasuk partial CSS, header, sidebar, footer, dan JavaScript. Sidebar menandai menu aktif sesuai route yang dibuka.
+
+Area admin (dashboard CV, Biodata, Pelanggan, dan User) hanya dapat dibuka oleh akun admin. Sesudah menjalankan migrasi, buat akun admin pertama melalui `php artisan admin:create`, lalu masuk melalui `/admin/login`. Kelola akun di `/admin/users`; password baru minimal 8 karakter. Jangan gunakan akun admin demo atau password bawaan di lingkungan publik.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.

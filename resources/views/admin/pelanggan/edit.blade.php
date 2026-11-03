@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.admin.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Pelanggan</title>
-    <link type="text/css" href="{{ asset('assets-admin/css/volt.css') }}" rel="stylesheet">
-</head>
+@section('title', 'Edit Pelanggan')
 
-<body>
-    <main class="content">
-        <div class="container py-4">
+@section('content')
+    <div class="container py-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h1 class="h4 mb-1">Edit Pelanggan</h1>
@@ -79,8 +72,5 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </main>
-</body>
-
-</html>
+    </div>
+@endsection

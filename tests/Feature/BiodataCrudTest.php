@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Biodata;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,7 @@ class BiodataCrudTest extends TestCase
 
     public function test_dashboard_lists_biodata_in_the_resume_template(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         Biodata::query()->create([
             'name' => 'Andika',
             'nim' => '10210001',
@@ -24,11 +26,22 @@ class BiodataCrudTest extends TestCase
             ->assertOk()
             ->assertSee('Pengalaman')
             ->assertSee('Kelola CV')
+            ->assertSee('Kelola User')
             ->assertSee('Curriculum Vitae')
             ->assertSee('Andika')
             ->assertSee('10210001')
             ->assertSee('Lihat CV')
             ->assertSee(route('biodata.resume', Biodata::query()->first()));
+    }
+
+    public function test_admin_can_open_the_create_biodata_form(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+        $this->get(route('biodata.create'))
+            ->assertOk()
+            ->assertSee('Buat CV')
+            ->assertSee(route('biodata.store'));
     }
 
     public function test_homepage_displays_the_saved_cv_in_the_resume_template(): void
@@ -77,6 +90,7 @@ class BiodataCrudTest extends TestCase
 
     public function test_biodata_can_be_created_updated_and_deleted_with_a_profile_photo(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         Storage::fake('public');
 
         $this->post(route('biodata.store'), [
@@ -142,6 +156,7 @@ class BiodataCrudTest extends TestCase
 
     public function test_biodata_rejects_duplicate_nim_and_invalid_profile_photos(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         Biodata::query()->create([
             'name' => 'Andika',
             'nim' => '10210001',

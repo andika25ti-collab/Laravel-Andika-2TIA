@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Pelanggan;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,21 +13,31 @@ class PelangganCrudTest extends TestCase
 
     public function test_index_displays_saved_pelanggan(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         Pelanggan::create($this->validPelanggan());
 
         $this->get(route('pelanggan.index'))
             ->assertOk()
             ->assertSee('Andika')
-            ->assertSee('andika@example.com');
+            ->assertSee('andika@example.com')
+            ->assertSee('id="sidebarMenu"', false)
+            ->assertSee('nav-item active', false);
     }
 
     public function test_create_form_is_displayed(): void
     {
-        $this->get(route('pelanggan.create'))->assertOk();
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+        $this->get(route('pelanggan.create'))
+            ->assertOk()
+            ->assertSee('id="sidebarMenu"', false)
+            ->assertSee('nav-item active', false);
     }
 
     public function test_store_saves_valid_pelanggan(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+
         $this->post(route('pelanggan.store'), $this->validPelanggan())
             ->assertRedirect(route('pelanggan.index'))
             ->assertSessionHas('success');
@@ -39,6 +50,8 @@ class PelangganCrudTest extends TestCase
 
     public function test_store_rejects_invalid_pelanggan(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+
         $this->from(route('pelanggan.create'))
             ->post(route('pelanggan.store'), [
                 'first_name' => '',
@@ -63,10 +76,19 @@ class PelangganCrudTest extends TestCase
 
     public function test_update_and_show_pelanggan(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         $pelanggan = Pelanggan::create($this->validPelanggan());
 
-        $this->get(route('pelanggan.show', $pelanggan))->assertOk()->assertSee('Andika');
-        $this->get(route('pelanggan.edit', $pelanggan))->assertOk()->assertSee('Andika');
+        $this->get(route('pelanggan.show', $pelanggan))
+            ->assertOk()
+            ->assertSee('Andika')
+            ->assertSee('id="sidebarMenu"', false)
+            ->assertSee('nav-item active', false);
+        $this->get(route('pelanggan.edit', $pelanggan))
+            ->assertOk()
+            ->assertSee('Andika')
+            ->assertSee('id="sidebarMenu"', false)
+            ->assertSee('nav-item active', false);
 
         $updated = $this->validPelanggan();
         $updated['first_name'] = 'Dika';
@@ -83,6 +105,7 @@ class PelangganCrudTest extends TestCase
 
     public function test_update_allows_existing_email_but_rejects_another_records_email(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         $pelanggan = Pelanggan::create($this->validPelanggan());
         $otherPelanggan = Pelanggan::create($this->validPelanggan([
             'first_name' => 'Budi',
@@ -102,6 +125,7 @@ class PelangganCrudTest extends TestCase
 
     public function test_destroy_deletes_pelanggan(): void
     {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
         $pelanggan = Pelanggan::create($this->validPelanggan());
 
         $this->delete(route('pelanggan.destroy', $pelanggan))

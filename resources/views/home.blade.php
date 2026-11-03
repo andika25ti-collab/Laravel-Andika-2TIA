@@ -174,19 +174,43 @@
                         <form action="{{ route('question.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama</label>
-                                <input type="text" class="form-control" name="nama">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', old('nama')) }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" name="email">
+                                <input type="email" id="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="pertanyaan" class="form-label">Pertanyaan</label>
-                                <textarea class="form-control" rows="4" name="pertanyaan"></textarea>
+                                <label for="question" class="form-label">Pertanyaan</label>
+                                <textarea id="question" class="form-control @error('question') is-invalid @enderror" rows="4" name="question" required>{{ old('question', old('pertanyaan')) }}</textarea>
+                                @error('question')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-primary">Kirim Pertanyaan</button>
                         </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3">Pertanyaan Terkirim</h3>
+                        @forelse ($questions as $question)
+                            <article class="mb-3">
+                                <h4 class="h6 mb-1">{{ $question->name }}</h4>
+                                <p class="small text-muted mb-1">{{ $question->email }}</p>
+                                <p class="mb-0">{{ $question->question }}</p>
+                            </article>
+                        @empty
+                            <p class="text-muted mb-0">Belum ada pertanyaan.</p>
+                        @endforelse
                     </div>
                 </div>
 
