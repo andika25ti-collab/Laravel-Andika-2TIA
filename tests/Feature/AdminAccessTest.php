@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\CreateFirstUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -18,6 +19,16 @@ class AdminAccessTest extends TestCase
 
         $this->get(route('admin.users.index'))
             ->assertRedirect(route('login'));
+    }
+
+    public function test_first_user_seeder_creates_an_admin_account(): void
+    {
+        $this->seed(CreateFirstUser::class);
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'gatot@pcr.ac.id',
+            'is_admin' => true,
+        ]);
     }
 
     public function test_non_admin_cannot_access_admin_pages(): void

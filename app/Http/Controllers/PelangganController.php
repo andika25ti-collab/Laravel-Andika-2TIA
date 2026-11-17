@@ -9,11 +9,25 @@ use Illuminate\Validation\Rule;
 class PelangganController extends Controller
 {
     // Menampilkan daftar pelanggan
-    public function index()
+    public function index(Request $request)
     {
-        $pelanggan = Pelanggan::orderBy('pelanggan_id')->get();
+        $request->validate([
+            'gender' => ['nullable', Rule::in(['Male', 'Female', 'Other'])],
+            'search' => ['nullable', 'string', 'max:100'],
+        ]);
 
-        return view('admin.pelanggan.index', compact('pelanggan'));
+        $filterableColumns = ['gender'];
+        $searchableColumns = ['first_name', 'last_name', 'email'];
+
+        $dataPelanggan = Pelanggan::query()
+            ->filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->orderBy('pelanggan_id')
+            ->paginate(10)
+            ->onEachSide(2)
+            ->withQueryString();
+
+        return view('admin.pelanggan.index', compact('dataPelanggan'));
     }
 
     // Menampilkan form Tambah Pelanggan

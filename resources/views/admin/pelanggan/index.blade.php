@@ -18,10 +18,35 @@
 
             <div class="card border-0 shadow">
                 <div class="card-body">
+                    <form method="GET" action="{{ route('pelanggan.index') }}" class="row g-2 align-items-center mb-3">
+                        <div class="col-md-3">
+                            <label for="gender" class="visually-hidden">Filter gender</label>
+                            <select name="gender" id="gender" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua gender</option>
+                                <option value="Male" @selected(request('gender') === 'Male')>Male</option>
+                                <option value="Female" @selected(request('gender') === 'Female')>Female</option>
+                                <option value="Other" @selected(request('gender') === 'Other')>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="search" class="visually-hidden">Cari pelanggan</label>
+                            <div class="input-group">
+                                <input type="search" name="search" id="search" class="form-control"
+                                    value="{{ request('search') }}" placeholder="Cari nama atau email">
+                                <button type="submit" class="btn btn-outline-secondary">Cari</button>
+                                @if (request()->filled('search'))
+                                    <a href="{{ request()->fullUrlWithQuery(['search' => null, 'page' => null]) }}"
+                                        class="btn btn-outline-secondary">Hapus pencarian</a>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="table-responsive">
                         <table class="table table-centered table-nowrap mb-0">
                             <thead>
                                 <tr>
+                                    <th scope="col">No.</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Tanggal Lahir</th>
                                     <th scope="col">Gender</th>
@@ -31,8 +56,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($pelanggan as $item)
+                                @forelse ($dataPelanggan as $item)
                                     <tr>
+                                        <td>{{ ($dataPelanggan->currentPage() - 1) * $dataPelanggan->perPage() + $loop->iteration }}</td>
                                         <td>{{ $item->first_name }} {{ $item->last_name }}</td>
                                         <td>{{ $item->birthday ?? '-' }}</td>
                                         <td>{{ $item->gender ?? '-' }}</td>
@@ -50,11 +76,15 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Belum ada data pelanggan.</td>
+                                        <td colspan="7" class="text-center">Belum ada data pelanggan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="mt-3">
+                        {{ $dataPelanggan->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
